@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Themeable Instagram Style Chat</title>
+
+<style>
+/* Theme Variables */
+:root {
+  /* Dark Mode (Default) */
+  --bg-color: #000000;
+  --chat-bg: #000000;
+  --text-color: #ffffff;
+  --header-border: #262626;
+  --bubble-left-bg: #262626;
+  --bubble-left-text: #ffffff;
+  --bubble-right-bg: linear-gradient(135deg, #7038bb, #b934b6, #e33d7b);
+  --bubble-right-text: #ffffff;
+  --pill-bg: #262626;
+  --pill-border: #363636;
+  --icon-color: #ffffff;
+  --placeholder-color: #a8a8a8;
+}
+
+[data-theme="light"] {
+  /* Light Mode */
+  --bg-color: #fafafa;
+  --chat-bg: #ffffff;
+  --text-color: #000000;
+  --header-border: #dbdbdb;
+  --bubble-left-bg: #efefef;
+  --bubble-left-text: #000000;
+  --bubble-right-bg: linear-gradient(135deg, #7038bb, #b934b6, #e33d7b);
+  --bubble-right-text: #ffffff;
+  --pill-bg: #efefef;
+  --pill-border: #dbdbdb;
+  --icon-color: #000000;
+  --placeholder-color: #8e8e8e;
+}
+
+[data-theme="color"] {
+  /* Normal Colored Mode (Classic Blue) */
+  --bg-color: #e6f2ff;
+  --chat-bg: #ffffff;
+  --text-color: #333333;
+  --header-border: #b3d9ff;
+  --bubble-left-bg: #e4e6eb;
+  --bubble-left-text: #050505;
+  --bubble-right-bg: #0084ff;
+  --bubble-right-text: #ffffff;
+  --pill-bg: #f0f4f8;
+  --pill-border: #cce0ff;
+  --icon-color: #0084ff;
+  --placeholder-color: #8d949e;
+}
+
+/* Reset and System Font */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: var(--text-color);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Phone-style Container */
+.chat-box {
+  width: 400px;
+  height: 650px;
+  background: var(--chat-bg);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--header-border);
+  transition: background 0.3s ease, border 0.3s ease;
+}
+
+/* IG Style Header with Theme Selector */
+.header {
+  padding: 15px 20px;
+  background: var(--chat-bg);
+  font-weight: 600;
+  font-size: 16px;
+  border-bottom: 1px solid var(--header-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s ease, border 0.3s ease;
+}
+
+.header select {
+  background: var(--pill-bg);
+  color: var(--text-color);
+  border: 1px solid var(--pill-border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Message Area */
+.messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px; 
+}
+
+/* Chat Bubbles */
+.message {
+  padding: 10px 16px;
+  border-radius: 22px;
+  max-width: 70%;
+  font-size: 15px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Sent Messages (Right) */
+.right {
+  background: var(--bubble-right-bg);
+  color: var(--bubble-right-text);
+  align-self: flex-end;
+  border-bottom-right-radius: 4px; 
+}
+
+/* Received Messages (Left) */
+.left {
+  background: var(--bubble-left-bg);
+  color: var(--bubble-left-text);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+/* Input Area Container (Bottom Bar) */
+form {
+  display: flex;
+  padding: 10px 15px 15px 15px;
+  background: var(--chat-bg);
+  align-items: center;
+  transition: background 0.3s ease;
+}
+
+/* IG Pill Wrapper */
+.input-pill {
+  display: flex;
+  align-items: center;
+  background: var(--pill-bg);
+  border-radius: 24px;
+  padding: 4px 8px 4px 16px;
+  width: 100%;
+  border: 1px solid var(--pill-border);
+  transition: background 0.3s ease, border 0.3s ease;
+}
+
+/* Transparent Input inside the Pill */
+input {
+  flex: 1;
+  padding: 8px 0;
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-size: 15px;
+  outline: none;
+  transition: color 0.3s ease;
+}
+
+input::placeholder {
+  color: var(--placeholder-color);
+}
+
+/* Instagram Outline Send Icon */
+button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--icon-color);
+  border-radius: 50%;
+  outline: none;
+  transition: color 0.3s ease;
+}
+
+button:hover {
+  opacity: 0.7;
+}
+
+button svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Minimal Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--header-border);
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="chat-box">
+  <div class="header">
+    <span>Live Chat</span>
+    <select id="theme-selector">
+      <option value="dark">Dark Mode</option>
+      <option value="light">Light Mode</option>
+      <option value="color">Colored Mode</option>
+    </select>
+  </div>
+
+  <div class="messages" id="messages"></div>
+
+  <form id="send-container">
+    <div class="input-pill">
+      <input type="text" id="messageInp" placeholder="Message..." autocomplete="off" />
+      <button type="submit" aria-label="Send">
+        <!-- IG Style Hollow Paper Plane -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+  </form>
+</div>
+
+<script src="http://localhost:8000/socket.io/socket.io.js"></script>
+<script>
+// Theme Switching Logic
+const themeSelector = document.getElementById('theme-selector');
+themeSelector.addEventListener('change', (e) => {
+  document.documentElement.setAttribute('data-theme', e.target.value);
+});
+
+// Chat Logic
+const socket = io('http://localhost:8000');
+
+const form = document.getElementById('send-container');
+const messageInput = document.getElementById('messageInp');
+const messageContainer = document.getElementById('messages');
+
+const append = (message, position) => {
+  const messageElement = document.createElement('div');
+  messageElement.innerText = message;
+  messageElement.classList.add('message');
+  messageElement.classList.add(position);
+  messageContainer.append(messageElement);
+  messageContainer.scrollTop = messageContainer.scrollHeight;
+};
+
+const username = prompt("Enter your name");
+socket.emit('new-user-joined', username);
+
+socket.on('user-joined', name => {
+  append(`${name} joined`, 'left');
+});
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const message = messageInput.value.trim();
+  if (!message) return;
+
+  append(`${message}`, 'right'); 
+  socket.emit('send', message);
+
+  messageInput.value = '';
+});
+
+socket.on('receive', data => {
+  append(`${data.name}: ${data.message}`, 'left');
+});
+</script>
+
+</body>
+</html>
