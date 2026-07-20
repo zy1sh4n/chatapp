@@ -251,7 +251,7 @@ button svg {
   </form>
 </div>
 
-<script src="http://localhost:8000/socket.io/socket.io.js"></script>
+<script src="https://chatapp-xwg6.onrender.com/socket.io/socket.io.js"></script>
 <script>
 // Theme Switching Logic
 const themeSelector = document.getElementById('theme-selector');
@@ -260,7 +260,8 @@ themeSelector.addEventListener('change', (e) => {
 });
 
 // Chat Logic
-const socket = io('http://localhost:8000');
+const socket = io('https://chatapp-xwg6.onrender.com
+                  ');
 
 const form = document.getElementById('send-container');
 const messageInput = document.getElementById('messageInp');
